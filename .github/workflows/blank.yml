@@ -2,10 +2,14 @@
 
 name: CI
 
+uses: szenius/set-timezone@v1.2
+with:
+  timezoneLinux: "Asia/Shanghai"
+
 # Controls when the workflow will run
 on:
   schedule:
-    - cron: '0 3  * * * '
+    - cron: '0 3  * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,7 +28,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: curl -s https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt |sed -e 's/^/add address=/g' -e 's/$/ list=CNIP/g'|sed -e $'1i\\\n/ip firewall address-list' -e $'1i\\\nremove [/ip firewall address-list find list=CNIP]' -e $'1i\\\nadd address=10.0.0.0/8 list=CNIP comment=private-network' -e $'1i\\\nadd address=172.16.0.0/12 list=CNIP comment=private-network' -e $'1i\\\nadd address=192.168.0.0/16 list=CNIP comment=private-network -e $'1i\\\nadd address=15.24.0.0/16 list=CNIP comment=private-network -e $'1i\\\nadd address=15.28.0.0/16 list=CNIP comment=private-network'>cnip.rsc
+        run: curl -s https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt |sed -e 's/^/add address=/g' -e 's/$/ list=CNIP/g'|sed -e $'1i\\\n/ip firewall address-list' -e $'1i\\\nremove [/ip firewall address-list find list=CNIP]' -e $'1i\\\nadd address=10.0.0.0/8 list=CNIP comment=private-network' -e $'1i\\\nadd address=172.16.0.0/12 list=CNIP comment=private-network' -e $'1i\\\nadd address=192.168.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.24.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.28.0.0/16 list=CNIP comment=private-network'>cnip.rsc
 
       - name: Release
         uses: softprops/action-gh-release@v1
