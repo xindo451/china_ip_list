@@ -5,6 +5,7 @@ add address=172.16.0.0/12 list=CNIP comment=private-network
 add address=192.168.0.0/16 list=CNIP comment=private-network
 add address=15.24.0.0/16 list=CNIP comment=private-network
 add address=15.28.0.0/16 list=CNIP comment=private-network
+add address=100.64.0.0/10 list=CNIP comment=private-network
 add address=1.0.1.0/24 list=CNIP comment=CNIP
 add address=1.0.2.0/23 list=CNIP comment=CNIP
 add address=1.0.8.0/21 list=CNIP comment=CNIP
