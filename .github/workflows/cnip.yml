@@ -21,6 +21,7 @@ jobs:
              echo "add list=CNIP address=$net comment=CNIP"
            done
          } > ../cnip.rsc
+         rm CN.txt
         
     - name: Check for changes
       run: |
