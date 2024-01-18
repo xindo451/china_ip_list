@@ -14,8 +14,13 @@ jobs:
 
     - name: make ip list
       run: |
-        chmod +x make_list.sh
-        ./make_list.sh
+         wget -O CN.txt https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt
+         { 
+           echo "/ip firewall address-list"
+           for net in $(cat CN.txt) ; do
+             echo "add list=CNIP address=$net comment=CNIP"
+           done
+         } > ../cnip.rsc
         
     - name: Check for changes
       run: |
