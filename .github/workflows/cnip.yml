@@ -6,18 +6,25 @@ on:
     - cron: '0 20  * * *'
 
 jobs:
-    resources:
-        name: Update resources
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Run a one-line script
-              env: 
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                curl -s https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt |sed -e 's/^/add address=/g' -e 's/$/ list=CNIP comment=CNIP/g'|sed -e $'1i\\\n/ip firewall address-list' -e $'1i\\\nremove [/ip firewall address-list find list=CNIP]' -e $'1i\\\nadd address=10.0.0.0/8 list=CNIP comment=private-network' -e $'1i\\\nadd address=172.16.0.0/12 list=CNIP comment=private-network' -e $'1i\\\nadd address=192.168.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.24.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.28.0.0/16 list=CNIP comment=private-network'>cnip.rsc
-                git config --global user.email "your_email@example.com"
-                git config --global user.name  "xindo451"
-                git add -f ./cnip.rsc
-                git commit -m "Update cnip"
-                git push origin master  --no-verify
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run a one-line script
+      run: |
+        curl -s https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt |sed -e 's/^/add address=/g' -e 's/$/ list=CNIP comment=CNIP/g'|sed -e $'1i\\\n/ip firewall address-list' -e $'1i\\\nremove [/ip firewall address-list find list=CNIP]' -e $'1i\\\nadd address=10.0.0.0/8 list=CNIP comment=private-network' -e $'1i\\\nadd address=172.16.0.0/12 list=CNIP comment=private-network' -e $'1i\\\nadd address=192.168.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.24.0.0/16 list=CNIP comment=private-network' -e $'1i\\\nadd address=15.28.0.0/16 list=CNIP comment=private-network'>cnip.rsc
+
+    - name: Check for changes
+      run: |
+        if [[ -n $(git status -s) ]]; then
+            git config --global user.email "your_email@example.com"
+            git config --global user.name  "xindo451"
+            git add -f ./cnip.rsc
+            git commit -m "Update cnip"
+        fi
+
+    - name: Push changes
+      run: git push origin master
